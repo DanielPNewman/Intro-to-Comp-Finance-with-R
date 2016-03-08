@@ -39,6 +39,40 @@ head(sbux_prices_df)
 
 # With Dates as rownames, you can subset directly on the dates.
 # Find indices associated with the dates 3/1/1994 and 3/1/1995.
-price_1 <- 
-price_2 <- 
+price_1 <- sbux_prices_df["3/1/1994",]
+price_2 <- sbux_prices_df["3/1/1995",]
+
+# Now add all relevant arguments to the plot function below to get a nicer plot
+plot(sbux_df$Adj.Close, ylab="Adjusted close",
+     main="Monthly closing price of SBUX", type="l", col='blue', lwd=2)
+
+
+###### Calculate simple returns #########
+
+# Your task in this exercise is to compute the simple returns for every time point. 
+# The fact that R is vectorized makes that relatively easy. 
+# In case you would like to calculate the price difference over time, you can use:
+#     sbux_prices_df[2:n,1] - sbux_prices_df[1:(n-1),1]
+# Think about why this indeed calculates the price difference for all time periods. 
+# The first vector contains all prices, except the price on the first day. 
+# The second vector contains all prices except the price on the last day. 
+
+
+# Denote n the number of time periods
+n <- nrow(sbux_prices_df)
+
+#Calculate the difference in closing price between each month:
+sbux_diff<-sbux_prices_df[2:n,1] - sbux_prices_df[1:(n-1),1]
+
+#calaulate the simple return from month-to-month:
+sbux_ret <- sbux_diff/sbux_prices_df[1:(n-1),1]
+    
+# Notice that sbux_ret is not a data frame object:
+class(sbux_ret)
+
+# Now add dates as names to the vector and print the first elements of sbux_ret to the console 
+sbux_ret <- setNames(sbux_ret, sbux_df$Date[2:n])
+head(sbux_ret)
+
+
 
