@@ -75,4 +75,69 @@ sbux_ret <- setNames(sbux_ret, sbux_df$Date[2:n])
 head(sbux_ret)
 
 
+########### Compute continuously compounded 1-month returns  ##############
+
+# As you might remember from class, the relation between single-period and multi-period 
+# returns is multiplicative for single returns. That is not very convenient. 
+# The yearly return is for example the geometric average of the monthly returns.
+# Therefore, in practice you will often use continuously compounded returns. 
+# These returns have an additive relationship between single and multi-period 
+# returns 
+
+# Compute continuously compounded 1-month returns
+sbux_ccret <- log(sbux_prices_df[2:n,1] ) - log(sbux_prices_df[1:(n-1),1])
+
+
+# Assign names to the continuously compounded 1-month returns
+names(sbux_ccret) <- sbux_df$Date[2:n]
+    
+# Show sbux_ccret
+head(sbux_ccret)
+
+# Compare the simple and continuously compounded returns
+cbind(sbux_ret, sbux_ccret)
+
+
+# The simple returns (sbux_ret) and the continuously compounded returns .
+# (sbux_ccret) have been preloaded in your workspace
+
+# Plot the returns on the same graph
+plot(sbux_ret, type="l", col="blue", lwd=2, ylab="Return",
+     main="Monthly Returns on SBUX")
+
+# Add horizontal line at zero
+abline(h=0)
+
+# Add a legend
+legend(x="bottomright", legend=c("Simple", "CC"), 
+       lty=1, lwd=2, col=c("blue","red"))
+
+# Add the continuously compounded returns
+lines(sbux_ccret,  col="red", lwd=2)
+
+
+############ Calculate growth of $1 invested in SBUX ####################
+
+# Compute gross returns (i.e. the simple return + 1)
+sbux_gret <- sbux_ret + 1
+
+# Remember that when you use simple returns, the total return over a period can be 
+# obtained by taking the cumulative product of the gross returns. R has a handy 
+# cumprod() function that calculates that cumulative product.
+    
+    # Compute future values
+    sbux_fv <- cumprod(sbux_gret)
+    
+    # Plot the evolution of the $1 invested in SBUX as a function of time
+    plot(sbux_fv, type="l", col="blue", lwd=2, ylab="Dollars", 
+         main="FV of $1 invested in SBUX")
+
+
+
+
+
+
+
+
+
 
